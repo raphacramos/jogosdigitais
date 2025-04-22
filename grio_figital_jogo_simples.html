@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Griô Figital - Voz que Transforma</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f4f1ec;
+      text-align: center;
+      padding: 40px;
+    }
+    #story {
+      margin-top: 30px;
+      font-size: 1.2em;
+      color: #333;
+      min-height: 60px;
+    }
+    #world {
+      margin-top: 40px;
+      font-size: 2em;
+      transition: 0.3s ease;
+    }
+    #phase {
+      margin-top: 20px;
+      font-weight: bold;
+      color: #666;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <h1>🌍 Griô Figital</h1>
+  <p>Use sua voz para restaurar o mundo esquecido.</p>
+  <button onclick="startRecognition()">Contar História</button>
+  <div id="phase">Fase 1: Vale do Esquecimento</div>
+  <div id="story"></div>
+  <div id="world">🌑 Mundo Silenciado</div>
+
+  <script>
+    const storyDiv = document.getElementById("story");
+    const world = document.getElementById("world");
+    const phaseDiv = document.getElementById("phase");
+
+    let currentPhase = 1;
+
+    function nextPhase() {
+      currentPhase++;
+      phaseDiv.innerHTML = "Fase " + currentPhase + ": " + (currentPhase === 2 ? "Campos da Memória" : "Montanhas da Consciência");
+      world.innerHTML = "🌑 Mundo Silenciado";
+      world.style.color = "black";
+    }
+
+    function startRecognition() {
+      const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.lang = 'pt-BR';
+      recognition.start();
+
+      recognition.onstart = function() {
+        storyDiv.innerHTML = "🎤 Escutando sua voz...";
+      };
+
+      recognition.onresult = function(event) {
+        const texto = event.results[0][0].transcript.toLowerCase();
+        storyDiv.innerHTML = "🗣️ Você disse: <em>" + texto + "</em>";
+
+        if (texto.includes("vida") || texto.includes("esperança")) {
+          world.innerHTML = "🌳 O mundo floresce com sua palavra!";
+          world.style.color = "green";
+          if (currentPhase === 1) nextPhase();
+        } else if (texto.includes("lembrança") || texto.includes("ancestral")) {
+          world.innerHTML = "🔥 Espíritos antigos acenderam o fogo da memória!";
+          world.style.color = "orange";
+          if (currentPhase === 2) nextPhase();
+        } else if (texto.includes("sabedoria") || texto.includes("liberdade")) {
+          world.innerHTML = "🕊️ A consciência se expandiu!";
+          world.style.color = "blue";
+        } else {
+          world.innerHTML = "🌫️ A história ecoa, mas o mundo ainda precisa de mais.";
+          world.style.color = "gray";
+        }
+      };
+
+      recognition.onerror = function() {
+        storyDiv.innerHTML = "❌ Erro ao reconhecer voz. Tente novamente.";
+      };
+    }
+  </script>
+</body>
+</html>
